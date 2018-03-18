@@ -64,5 +64,5 @@ function updateBook(req, res) {
     });
 }
 
-//export all the functions
+//export all the functions.js
 module.exports = { getBooks, postBook, getBook, deleteBook, updateBook };
