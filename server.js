@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const port = 8080;
 const book = require('./controllers/routes/bookRoutes');
+const chat = require('./controllers/routes/chatRoutes');
 const config = require('config'); //we load the db location from the JSON files
 
 const https = require('https');
@@ -110,6 +111,8 @@ app.disable('x-powered-by');
 
 app.get("/", (req, res) => res.json({message: "Welcome to Kimli ! "}));
 
+//////////// BOOKS ///////////////
+
 app.route("/books")
     .get(book.getBooks)
     .post(book.postBook);
@@ -119,6 +122,12 @@ app.route("/books/:id")
     .delete(book.deleteBook)
     .put(book.updateBook);
 
+///////////// CHATS //////////////
+
+app.route("/chats/:userId")
+    .get(chat.getChatsByUserId);
+
+//////////////////////////////////
 app.listen(port);
 
 console.log("Magic is happening on port " + port);
