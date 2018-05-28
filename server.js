@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const port = 8080;
-const book = require('./controllers/routes/book');
+const book = require('./controllers/routes/bookRoutes');
 const config = require('config'); //we load the db location from the JSON files
 
 const https = require('https');
@@ -110,11 +110,11 @@ app.disable('x-powered-by');
 
 app.get("/", (req, res) => res.json({message: "Welcome to Kimli ! "}));
 
-app.route("/book")
+app.route("/books")
     .get(book.getBooks)
     .post(book.postBook);
 
-app.route("/book/:id")
+app.route("/books/:id")
     .get(book.getBook)
     .delete(book.deleteBook)
     .put(book.updateBook);

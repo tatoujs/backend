@@ -1,23 +1,28 @@
-const mongoose = require('mongoose');
-const Book = require('../models/book');
+"use strict";
+
+const Book = require('../models/bookModel');
 
 /*
  * GET /book route to retrieve all the books.
  */
-function getBooks(req, res) {
+let getBooks = (req, res) => {
+    let limit = parseInt(req.query.limit);
+
     //Query the DB and if no errors, send all the books
-    let query = Book.find({});
+    let query = Book.find({}) //put an offset
+        .limit(limit || 20);
+
     query.exec((err, books) => {
         if(err) res.send(err);
         //If no errors, send them back to the client
         res.json(books);
     });
-}
+};
 
 /*
  * POST /book to save a new book.
  */
-function postBook(req, res) {
+let postBook = (req, res) => {
     //Creates a new book
     let newBook = new Book(req.body);
     //Save it into the DB.
@@ -29,32 +34,32 @@ function postBook(req, res) {
             res.json({message: "Book successfully added!", book });
         }
     });
-}
+};
 
 /*
  * GET /book/:id route to retrieve a book given its id.
  */
-function getBook(req, res) {
+let getBook = (req, res) => {
     Book.findById(req.params.id, (err, book) => {
         if(err) res.send(err);
         //If no errors, send it back to the client
         res.json(book);
     });
-}
+};
 
 /*
  * DELETE /book/:id to delete a book given its id.
  */
-function deleteBook(req, res) {
+let deleteBook = (req, res) => {
     Book.remove({_id : req.params.id}, (err, result) => {
         res.json({ message: "Book successfully deleted!", result });
     });
-}
+};
 
 /*
  * PUT /book/:id to update a a book given its id
  */
-function updateBook(req, res) {
+let updateBook = (req, res) => {
     Book.findById({_id: req.params.id}, (err, book) => {
         if(err) res.send(err);
         Object.assign(book, req.body).save((err, book) => {
@@ -62,7 +67,7 @@ function updateBook(req, res) {
             res.json({ message: 'Book updated!', book });
         });
     });
-}
+};
 
 //export all the functions.js
 module.exports = { getBooks, postBook, getBook, deleteBook, updateBook };
