@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const port = 8080;
-const book = require('./controllers/routes/bookRoutes');
-const chat = require('./controllers/routes/chatRoutes');
+const bookService = require('./services/bookService');
+const chatService = require('./services/chatService');
 const config = require('config'); //we load the db location from the JSON files
 
 const https = require('https');
@@ -114,18 +114,19 @@ app.get("/", (req, res) => res.json({message: "Welcome to Kimli ! "}));
 //////////// BOOKS ///////////////
 
 app.route("/books")
-    .get(book.getBooks)
-    .post(book.postBook);
+    .get(bookService.getBooks)
+    .post(bookService.postBook);
 
 app.route("/books/:id")
-    .get(book.getBook)
-    .delete(book.deleteBook)
-    .put(book.updateBook);
+    .get(bookService.getBook)
+    .delete(bookService.deleteBook)
+    .put(bookService.updateBook);
 
 ///////////// CHATS //////////////
 
 app.route("/chats/:userId")
-    .get(chat.getChatsByUserId);
+    .get(chatService.getChatsByUserId)
+    .post(chatService.addChat);
 
 //////////////////////////////////
 app.listen(port);
