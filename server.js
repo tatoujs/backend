@@ -119,14 +119,16 @@ app.route("/books")
 
 app.route("/books/:id")
     .get(bookService.getBook)
-    .delete(bookService.deleteBook)
     .put(bookService.updateBook);
 
 ///////////// CHATS //////////////
 
+app.route("/chats")
+    .post(chatService.addChat);
+
 app.route("/chats/:userId")
     .get(chatService.getChatsByUserId)
-    .post(chatService.addChat);
+    .put(chatService.updateChat);
 
 //////////////////////////////////
 app.listen(port);

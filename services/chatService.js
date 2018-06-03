@@ -38,4 +38,40 @@ let addChat = (req, res) => {
   }
 };
 
-module.exports = { getChatsByUserId, addChat };
+let updateChat = (req, res) => {
+    Chat.findById({'_id': req.params._id}, (err, chat) => {
+        if(err) {
+            res.status(500);
+            res.send(err);
+        } else if(!chat) {
+            res.status(404);
+            res.send("Wrond chat id");
+        } else {
+            Object.assign(chat, req.body).save((err, chatUpdated) => {
+                if(err) {
+                    res.status(500);
+                    res.send(err);
+                } else {
+                    res.status(204);
+                    // TODO: VERIFY WELL 204 AND NOT 200 OTHERWISE ADD {}
+                    res.send();
+                }
+            });
+        }
+    });
+};
+
+let deleteChat = (req, res) => {
+  Chat.remove({_id: req.params._id}, (err, result) => {
+      if(err) {
+          res.status(500);
+          res.send(err);
+      } else {
+          res.status(204);
+          // TODO: VERIFY WELL 204 AND NOT 200 OTHERWISE ADD {}
+          res.send();
+      }
+  })
+};
+
+module.exports = { getChatsByUserId, addChat, updateChat, deleteChat };

@@ -60,8 +60,11 @@ let deleteBook = (req, res) => {
         if(err) {
             res.status(500);
             res.send(err);
+        } else {
+            res.status(204);
+            // TODO: VERIFY WELL 204 AND NOT 200 OTHERWISE ADD {}
+            res.send();
         }
-        res.json({ message: "Book successfully deleted!", result });
     });
 };
 
@@ -78,8 +81,11 @@ let updateBook = (req, res) => {
             if(err) {
                 res.status(500);
                 res.send(err);
+            } else {
+                res.status(204);
+                // TODO: VERIFY WELL 204 AND NOT 200 OTHERWISE ADD {}
+                res.send();
             }
-            res.json({ message: 'Book updated!', book });
         });
     });
 };
