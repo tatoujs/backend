@@ -5,7 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "export NODE_ENV=dev && node server.js",
-    "test": "jasmine"
+    "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   },
   "author": "Florian Adonis <tanohzana@gmail.com>",
   "license": "ISC",
@@ -30,5 +35,8 @@
     "stripe": "^5.5.0",
     "xml-js": "^1.6.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "husky": "^1.0.0-rc.13",
+    "jest": "^23.5.0"
+  }
 }

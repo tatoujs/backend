@@ -3,7 +3,7 @@
 const Book = require('../models/bookModel');
 
 /*
- * GET /book route to retrieve all the books.
+ * GET /books route to retrieve all the books.
  */
 let getBooks = (req, res) => {
     let limit = parseInt(req.query.limit);
@@ -23,7 +23,7 @@ let getBooks = (req, res) => {
 };
 
 /*
- * POST /book to save a new book.
+ * POST /books to save a new book.
  */
 let postBook = (req, res) => {
     //Creates a new book
@@ -39,7 +39,7 @@ let postBook = (req, res) => {
 };
 
 /*
- * GET /book/:id route to retrieve a book given its id.
+ * GET /books/:id route to retrieve a book given its id.
  */
 let getBook = (req, res) => {
     Book.findById(req.params.id, (err, book) => {
@@ -53,7 +53,7 @@ let getBook = (req, res) => {
 };
 
 /*
- * DELETE /book/:id to delete a book given its id.
+ * DELETE /books/:id to delete a book given its id.
  */
 let deleteBook = (req, res) => {
     Book.remove({_id : req.params.id}, (err, result) => {
@@ -69,7 +69,7 @@ let deleteBook = (req, res) => {
 };
 
 /*
- * PUT /book/:id to update a a book given its id
+ * PUT /books/:id to update a a book given its id
  */
 let updateBook = (req, res) => {
     Book.findById({_id: req.params.id}, (err, book) => {
