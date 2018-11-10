@@ -1,30 +1,34 @@
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const port = 8080;
-const bookService = require('./services/bookService');
-const chatService = require('./services/chatService');
-const config = require('config'); //we load the db location from the JSON files
+import express from 'express'
+import mongoose from 'mongoose'
+import morgan from 'morgan'
+import bodyParser from 'body-parser'
+import https from 'https'
+import sha1 from 'sha1'
+import sha256 from 'sha256'
+import convert from 'xml-js'
+import { Isbn } from './utils/convertISBN/convert'
+import utilFunctions from './utils/functions'
+import request from 'ajax-request'
+import Slack from 'slack-node'
+import onesignal from 'simple-onesignal'
+import helmet from 'helmet'
+import ExpressBrute from 'express-brute'
+import nodemailer from 'nodemailer'
+import jwt from 'jsonwebtoken'
+import http from 'http'
+import SocketIO from 'socket.io'
 
-const https = require('https');
-const sha1 = require('sha1');
-const sha256 = require('sha256');
-const convert = require('xml-js');
-const Isbn = require('./utils/convertISBN/convert').Isbn;
-const utilFunctions = require('./utils/functions');
-const request = require('ajax-request');
-const Slack = require('slack-node');
-const onesignal = require('simple-onesignal');
-const helmet = require('helmet');
-const ExpressBrute = require('express-brute');
-const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken');
+import config from 'config' // we load the db location from the JSON files
 
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+import bookService from './services/bookService'
+import chatService from './services/chatService'
 
+const app = express()
+
+const server = http.Server(app)
+const io = new SocketIO(server)
+
+const port = 8080
 
 // db options
 const options = {

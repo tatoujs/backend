@@ -1,10 +1,9 @@
-"use strict";
+import mongoose from 'mongoose'
 
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 //book schema definition
-let BookSchema = new Schema(
+const BookSchema = new Schema(
     {
         _id: { type: String, required: true },
         isbn13: { type: String, required: true },
@@ -17,7 +16,7 @@ let BookSchema = new Schema(
     {
         versionKey: false
     }
-);
+)
 
 //Exports the BookSchema for use elsewhere.
-module.exports = mongoose.model('book', BookSchema);
+module.exports = mongoose.model('book', BookSchema)
