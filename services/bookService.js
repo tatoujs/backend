@@ -1,61 +1,47 @@
 import Book from '../models/bookModel'
-
+import CustomError from '../utils/errors'
 /*
  * GET /books route to retrieve all the books.
  */
-const getBooks = (req, res) => {
-    const limit = parseInt(req.query.limit)
+const getBooks = async (limit) => {
+  // Query the DB and if no errors, send all the books
+  const query = Book.find({}) // @TODO: put an offset
+    .limit(limit || 20)
 
-    // Query the DB and if no errors, send all the books
-    const query = Book.find({}) // @TODO: put an offset
-        .limit(limit || 20)
-
-    query.exec((err, books) => {
-        if (err) {
-            res.status(500)
-            res.send(err)
-        } else {
-            // If no errors, send them back to the client
-            res.json(books)
-        }
-    })
-}
-
-/*
- * POST /books to save a new book.
- */
-const postBook = (req, res) => {
-    const bookFields = req.body
-
-    // @TODO: add validators
-
-    // Creates a new book
-    const newBook = new Book(bookFields)
-
-    // Save it into the DB.
-    newBook.save((err,book) => {
-        if (err) {
-            res.send(err)
-        }
-        // If no errors, send it back to the client
-        res.json({message: "Book successfully added!", book })
-    })
+    const books = await query.exec()
+    return books
 }
 
 /*
  * GET /books/:id route to retrieve a book given its id.
  */
-const getBook = (req, res) => {
-    const { id } = req.params
+const getBook = async (bookFields) => {
+  const book = await Book.find(bookFields)
+  return book
+}
 
-    Book.findById(id, (err, book) => {
-        if (err) {
-            res.status(500)
-            res.send(err)
-        }
-        // If no errors, send it back to the client
-        res.json(book)
-    })
+/*
+ * POST /books to save a new book.
+ */
+const postBook = (bookFields) => {
+  const { isbn, userId } = bookFields
+
+  // @TODO: add validators
+
+  const book = getBook({ isbn })
+
+  // Creates a new book
+  // const newBook = new Book(bookFields)
+
+  // Save it into the DB.
+  newBook.save((err,book) => {
+    if (err) {
+      res.send(err)
+    }
+
+    // If no errors, send it back to the client
+    res.json({message: "Book successfully added!", book })
+  })
 }
 
 /*

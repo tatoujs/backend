@@ -112,21 +112,48 @@ app.get('/', (req, res) => res.json({ message: 'Welcome to Kimli !' }))
 ///////////// BOOKS ///////////////
 
 app.route("/books")
-  .get(bookService.getBooks)
-  .post(bookService.postBook)
+  .get(async (req, res) => {
+    try {
+      const { limit } = req.query
+      const books = await bookService.getBooks()
+
+      res.json(books)
+    } catch (e) {
+      res.status(e.status)
+      res.send(e.message)
+    }
+  })
+  // .post(async (req, res) => {
+  //   try {
+  //     const bookFields = req.body
+  //     await bookService.postBook(bookFields)
+  //   } catch (e) {
+  //     res.status(e.status)
+  //     res.send(e.message)
+  //   }
+  // })
 
 app.route("/books/:id")
-  .get(bookService.getBook)
-  .put(bookService.updateBook)
+  .get(async (req, res) => {
+    try {
+      const { id } = req.params
+      const book = await bookService.getBook({ _id: id })
+      res.json(book)
+    } catch (e) {
+      res.status(e.status)
+      res.send(e.message)
+    }
+  })
+//   .put(bookService.updateBook)
 
-///////////// CHATS //////////////
+// ///////////// CHATS //////////////
 
-app.route("/chats")
-  .post(chatService.addChat)
+// app.route("/chats")
+//   .post(chatService.addChat)
 
-app.route("/chats/:userId")
-  .get(chatService.getChatsByUserId)
-  .put(chatService.updateChat)
+// app.route("/chats/:userId")
+//   .get(chatService.getChatsByUserId)
+//   .put(chatService.updateChat)
 
 //////////////////////////////////
 

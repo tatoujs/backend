@@ -2,7 +2,7 @@ import sinon from 'sinon'
 import bookService from '../services/bookService'
 import Book from '../models/bookModel'
 
-describe('BookService', () => {
+xdescribe('BookService', () => {
   let res, statusSpy, sendSpy, jsonSpy
 
   beforeAll(() => {
