@@ -2,6 +2,6 @@
   "DBHost": "mongodb://florian_master:kimliMaster2@ds143221.mlab.com:43221/heroku_5f2kn8gp",
   "one_signal_api_key": "ZGRjNGYyODMtYjFjMC00N2Y4LThmZjItZWZhNGY1M2Y0YmU3",
   "one_signal_app_id": "d459fe5a-9ad6-4ecd-8ee7-4e5b2892741a",
-  "synch_key": "!1kimli2Is3The4Best5App6Ever7/",
+  "sync_key": "!1kimli2Is3The4Best5App6Ever7/",
   "stripeSecretKey": "sk_test_iG7PjA1LxiD3aGcf9TMDXZtI"
 }
