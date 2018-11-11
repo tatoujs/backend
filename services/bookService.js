@@ -1,5 +1,6 @@
 import Book from '../models/bookModel'
 import CustomError from '../utils/errors'
+import _ from 'lodash'
 
 /*
  * GET /books route to retrieve all the books.
@@ -9,15 +10,19 @@ const getBooks = async (limit) => {
   const query = Book.find({}) // @TODO: put an offset
     .limit(limit || 20)
 
-    const books = await query.exec()
+  const books = await query.exec()
 
-    return books
+  return books
 }
 
 /*
  * GET /books/:id route to retrieve a book given its id.
  */
 const getBook = async (bookFields) => {
+  if(_.isEmpty(bookFields)) {
+    throw new CustomError(400, 'empty search field')
+  }
+
   const book = await Book.find(bookFields)
   return book
 }
@@ -55,7 +60,7 @@ const deleteBook = (req, res) => {
 
     // @TODO: add validators
 
-    Book.remove({ _id : id }, (err, result) => {
+    Book.deleteOne({ _id : id }, (err, result) => {
         if (err) {
             res.status(500)
             res.send(err)

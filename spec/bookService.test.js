@@ -2,27 +2,28 @@ import sinon from 'sinon'
 import bookService from '../services/bookService'
 import Book from '../models/bookModel'
 import CustomError from '../utils/errors'
+import uuidv1 from 'uuid/v1'
 
 describe('BookService', () => {
-  let res, statusSpy, sendSpy, jsonSpy
+  let booksFindMethodStub, booksSaveMethodStub, booksDeleteOneMethodStub
 
   beforeAll(() => {
-    res = {
-      json: entityThatShouldBeReturned => {},
-      status: statusPassed => {},
-      send: message => {},
-    }
+    booksFindMethodStub = sinon.stub(Book, 'find')
+    // booksSaveMethodStub = sinon.stub(Book, 'save')
+    // booksDeleteOneMethodStub = sinon.stub(Book, 'deleteOne')
+  })
 
-    statusSpy = sinon.spy(res, "status")
-    sendSpy = sinon.spy(res, "send")
-    jsonSpy = sinon.spy(res, "json")
+  afterEach(() => {
+    booksFindMethodStub.reset()
+    // booksSaveMethodStub.reset()
+    // booksDeleteOneMethodStub.reset()
   })
 
   describe('getBooks()', () => {
-    let execFunction, bookFindMethodStub
+    let execFunction
 
     beforeAll(() => {
-      bookFindMethodStub = sinon.stub(Book, 'find').returns({
+      booksFindMethodStub.returns({
         limit: limitPassed => {
           return {
             exec: execFunction,
@@ -31,7 +32,7 @@ describe('BookService', () => {
       })
     })
 
-    it('should retrieve 11 books', async (done) => {
+    it('should retrieve 11 books', async () => {
       const expected = Array(11).fill(new Book())
       const returnedBooksArray = Array(11).fill(new Book())
 
@@ -44,23 +45,39 @@ describe('BookService', () => {
       const booksFound = await bookService.getBooks()
 
       expect(booksFound).toEqual(expected)
-      done()
-    })
-
-    xit('should throw an error 500 when query exec fails', async () => {
-      execFunction = () => new Promise(resolve, reject => {
-        setTimeout(() => {
-          throw new Error('something went wrong executing the query')
-        }, 2000)
-      })
-
-      expect(await bookService.getBooks).toThrow()
-      done()
     })
   })
 
   describe('getBook()', () => {
-    // Not easy to test as there is not a lot of business logic
+    let _id, expectedBook
+
+    beforeAll(() => {
+      _id = uuidv1()
+
+      booksFindMethodStub.returns(new Promise(resolve => {
+        setTimeout(() => resolve(expectedBook), 2000)
+      }))
+    })
+
+    it('should return a Book object matching the id', async () => {
+      expectedBook = new Book({ _id })
+      const book = await bookService.getBook({ _id })
+
+      expect(book).toEqual(expectedBook)
+    })
+
+    it('should throw error if search fields are empty', async () => {
+      const expectedError = {
+        message: "empty search field",
+        status: 400,
+      }
+
+      try {
+        await bookService.getBook({})
+      } catch (e) {
+        expect(e).toEqual(expectedError)
+      }
+    })
   })
 
   describe('deleteBook()', () => {
