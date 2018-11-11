@@ -1,8 +1,9 @@
 import sinon from 'sinon'
 import bookService from '../services/bookService'
 import Book from '../models/bookModel'
+import CustomError from '../utils/errors'
 
-xdescribe('BookService', () => {
+describe('BookService', () => {
   let res, statusSpy, sendSpy, jsonSpy
 
   beforeAll(() => {
@@ -18,10 +19,9 @@ xdescribe('BookService', () => {
   })
 
   describe('getBooks()', () => {
-    let execFunction, bookFindMethodStub, booksArray, req
+    let execFunction, bookFindMethodStub
 
     beforeAll(() => {
-      booksArray = Array(11).fill(new Book())
       bookFindMethodStub = sinon.stub(Book, 'find').returns({
         limit: limitPassed => {
           return {
@@ -29,33 +29,33 @@ xdescribe('BookService', () => {
           }
         }
       })
-      req = { query: { limit: 11 }}
     })
 
-    beforeEach(() => {
-      statusSpy.resetHistory()
-      sendSpy.resetHistory()
-      jsonSpy.resetHistory()
+    it('should retrieve 11 books', async (done) => {
+      const expected = Array(11).fill(new Book())
+      const returnedBooksArray = Array(11).fill(new Book())
+
+      execFunction = () => new Promise(resolve => {
+        setTimeout(() => {
+          resolve(returnedBooksArray)
+        }, 2000)
+      })
+
+      const booksFound = await bookService.getBooks()
+
+      expect(booksFound).toEqual(expected)
+      done()
     })
 
-    it('should retrieve 11 books', () => {
-      execFunction = cb => cb(null, booksArray)
+    xit('should throw an error 500 when query exec fails', async () => {
+      execFunction = () => new Promise(resolve, reject => {
+        setTimeout(() => {
+          throw new Error('something went wrong executing the query')
+        }, 2000)
+      })
 
-      bookService.getBooks(req, res)
-
-      expect(jsonSpy.withArgs(booksArray).called).toBeTruthy()
-      expect(sendSpy.notCalled).toBeTruthy()
-      expect(statusSpy.notCalled).toBeTruthy()
-    })
-
-    it('should throw an error 500 when query exec fails', () => {
-      execFunction = cb => cb(() => {}, null)
-
-      bookService.getBooks(req, res)
-
-      expect(statusSpy.called).toBeTruthy()
-      expect(sendSpy.called).toBeTruthy()
-      expect(jsonSpy.notCalled).toBeTruthy()
+      expect(await bookService.getBooks).toThrow()
+      done()
     })
   })
 

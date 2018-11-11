@@ -1,5 +1,6 @@
 import Book from '../models/bookModel'
 import CustomError from '../utils/errors'
+
 /*
  * GET /books route to retrieve all the books.
  */
@@ -9,6 +10,7 @@ const getBooks = async (limit) => {
     .limit(limit || 20)
 
     const books = await query.exec()
+
     return books
 }
 
