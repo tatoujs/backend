@@ -47,7 +47,7 @@ const postBook = (bookFields) => {
     }
 
     // If no errors, send it back to the client
-    res.json({message: "Book successfully added!", book })
+    res.json({message: 'Book successfully added!', book })
   })
 }
 

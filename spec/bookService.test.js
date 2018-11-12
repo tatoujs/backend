@@ -9,13 +9,14 @@ describe('BookService', () => {
 
   beforeAll(() => {
     booksFindMethodStub = sinon.stub(Book, 'find')
-    // booksSaveMethodStub = sinon.stub(Book, 'save')
-    // booksDeleteOneMethodStub = sinon.stub(Book, 'deleteOne')
+    // Book object seems to be created dynamically and save is not an "own property"
+    booksSaveMethodStub = sinon.stub(Book.prototype, 'save')
+    // booksDeleteOneMethodStub = sinon.stub(Book.prototype, 'deleteOne')
   })
 
   afterEach(() => {
     booksFindMethodStub.reset()
-    // booksSaveMethodStub.reset()
+    booksSaveMethodStub.reset()
     // booksDeleteOneMethodStub.reset()
   })
 
@@ -84,8 +85,39 @@ describe('BookService', () => {
     // Not easy to test as there is not a lot of business logic
   })
 
-  describe('postBook()', () => {
-    // Not easy to test as there is not a lot of business logic
+  xdescribe('postBook()', () => {
+    let expectedResult
+
+    beforeAll(() => {
+      // @TODO
+      // Given arguments, return different values
+      // And stub find method
+
+      booksSaveMethodStub.returns(new Promise(resolve => {
+        setTimeout(() => resolve(expectedResult), 2000)
+      }))
+    })
+
+    it('should save and return an object containing the saved object and a message', async () => {
+      const bookToSave = { isbn13: '9782266168540' }
+
+      expectedResult = {
+        message: 'Book successfully added!',
+        book: {
+          _id: '9782747027373',
+          isbn13: '9782747027373',
+          isbn10: '',
+          title: 'Le secret de Léonard de Vinci',
+          author: 'Mary Pope Osborne',
+          publisher: '',
+          published_year: '2009-06-25'
+        }
+      }
+
+      const result = await bookService.postBook(bookToSave)
+
+      expect(result).toEqual(expectedResult)
+    })
   })
 
   describe('updateBook()', () => {
