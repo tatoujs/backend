@@ -37,8 +37,8 @@ const postBook = (bookFields) => {
 
   const book = getBook({ isbn })
 
-  // Creates a new book
-  // const newBook = new Book(bookFields)
+  // verify
+//   book = { ...book, fetchBookInfo() }
 
   // Save it into the DB.
   newBook.save((err,book) => {

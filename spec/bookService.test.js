@@ -86,32 +86,37 @@ describe('BookService', () => {
   })
 
   xdescribe('postBook()', () => {
-    let expectedResult
+    let expectedResult, expectedBook
 
     beforeAll(() => {
       // @TODO
       // Given arguments, return different values
       // And stub find method
 
+      booksFindMethodStub.returns(new Promise(resolve => {
+        setTimeout(() => resolve(expectedBook), 2000)
+      }))
+
       booksSaveMethodStub.returns(new Promise(resolve => {
         setTimeout(() => resolve(expectedResult), 2000)
       }))
     })
 
-    it('should save and return an object containing the saved object and a message', async () => {
+    it('should save and return an object containing the saved object and a message when book already exists', async () => {
       const bookToSave = { isbn13: '9782266168540' }
+      expectedBook = {
+        _id: '9782747027373',
+        isbn13: '9782747027373',
+        isbn10: '',
+        title: 'Le secret de Léonard de Vinci',
+        author: 'Mary Pope Osborne',
+        publisher: '',
+        published_year: '2009-06-25'
+      }
 
       expectedResult = {
         message: 'Book successfully added!',
-        book: {
-          _id: '9782747027373',
-          isbn13: '9782747027373',
-          isbn10: '',
-          title: 'Le secret de Léonard de Vinci',
-          author: 'Mary Pope Osborne',
-          publisher: '',
-          published_year: '2009-06-25'
-        }
+        book: expectedBook,
       }
 
       const result = await bookService.postBook(bookToSave)
