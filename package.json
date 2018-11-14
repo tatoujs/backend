@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run build && node dist/server.js",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "test": "npm run build && jest dist/spec"
+    "test": "npm run build && jest --config ./jest.config.js dist/spec"
   },
   "husky": {
     "hooks": {
@@ -14,7 +14,10 @@
     }
   },
   "jest": {
-    "testURL": "http://localhost"
+    "testURL": "http://localhost",
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    }
   },
   "author": "Florian Adonis <tanohzana@gmail.com>",
   "license": "ISC",
