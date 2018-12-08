@@ -63,7 +63,6 @@ app.route("/users/:_id")
   .get(async (req, res) => {
     try {
       const userFields = req.params
-
       const user = await userService.get(userFields)
 
       res.json(user)
@@ -79,7 +78,7 @@ app.route("/users/:_id")
 
       res.send(userFields)
     } catch (e) {
-      res.status(e.status)
+      res.status(500)
       res.send(e.message)
     }
   })
@@ -90,10 +89,26 @@ app.route("/heroku/login")
   .post(async (req, res) => {
     try {
       const herokuLoginFields = req.body
-
       const result = await herokuService.login(herokuLoginFields)
 
       res.json(result)
+    } catch (e) {
+      res.status(500)
+      res.send(e.message)
+    }
+  })
+
+app.route('/heroku/apps/:app_id/logs')
+  .get(async (req, res) => {
+    try {
+      const userFields = req.params
+
+      // SET SOCKET IO ROOM NAME
+      // AND RESPOND OK WITH APP_ID
+
+      const appObj = {}
+
+      res.json(appObj)
     } catch (e) {
       res.status(500)
       res.send(e.message)
