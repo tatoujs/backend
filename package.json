@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "npm run build && node dist/server.js",
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "test": "npm run build && jest --config ./jest.config.js dist/spec"
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files"
   },
   "husky": {
     "hooks": {
@@ -29,25 +28,13 @@
     "body-parser": "^1.18.2",
     "config": "^1.30.0",
     "express": "^4.16.3",
-    "express-brute": "^1.0.1",
     "helmet": "^3.12.0",
-    "https": "^1.0.0",
-    "jsonwebtoken": "^8.2.0",
-    "lodash": "^4.17.11",
     "mongoose": "^5.0.10",
     "morgan": "^1.9.0",
-    "nodemailer": "^4.6.3",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "sha1": "^1.1.1",
-    "sha256": "^0.2.0",
-    "simple-onesignal": "^1.0.4",
-    "sinon": "^7.1.1",
-    "slack-node": "^0.1.8",
     "socket.io": "^2.0.4",
-    "stripe": "^5.5.0",
-    "uuid": "^3.3.2",
-    "xml-js": "^1.6.2"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "husky": "^1.0.0-rc.13",

@@ -2,22 +2,9 @@ import express from 'express'
 import mongoose from 'mongoose'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-import https from 'https'
-import sha1 from 'sha1'
-import sha256 from 'sha256'
-import convert from 'xml-js'
-import { Isbn } from './utils/convertISBN/convert'
-import utilFunctions from './utils/functions'
-import request from 'ajax-request'
-import Slack from 'slack-node'
-import onesignal from 'simple-onesignal'
 import helmet from 'helmet'
-import ExpressBrute from 'express-brute'
-import nodemailer from 'nodemailer'
-import jwt from 'jsonwebtoken'
 import http from 'http'
 import SocketIO from 'socket.io'
-import Stripe from 'stripe'
 
 // we load the db location from the JSON files
 import config from 'config'
@@ -42,9 +29,9 @@ db.on('error', console.error.bind(console, 'connection error:'))
 
 // Do not show logs when it is test
 if (config.util.getEnv('NODE_ENV') !== 'test') {
-    // use morgan to log at command line
-    // 'combined' outputs the Apache style LOGs
-    app.use(morgan('combined'))
+  // use morgan to log at command line
+  // 'combined' outputs the Apache style LOGs
+  app.use(morgan('combined'))
 }
 
 // parse application/json and look for raw text
@@ -75,46 +62,34 @@ app.use((req, res, next) => {
 
 app.disable('x-powered-by')
 
-app.get('/', (req, res) => res.json({ message: 'Welcome to Kimli !' }))
+app.get('/', (req, res) => res.json({ message: 'Welcome to TatouJS !' }))
 
-///////////// xxx ///////////////
+///////////// USER ///////////////
 
-app.route("/xxx")
-  .get(async (req, res) => {
-    try {
-      const { limit } = req.query
-      const books = await bookService.getBooks()
+// app.route("/user/:id")
+//   .get(async (req, res) => {
+//     try {
+//       const { id } = req.params
+//       const user = await userService.get(id)
 
-      res.json(books)
-    } catch (e) {
-      res.status(e.status)
-      res.send(e.message)
-    }
-  })
+//       res.json(books)
+//     } catch (e) {
+//       res.status(e.status)
+//       res.send(e.message)
+//     }
+//   })
 
-app.route("/yyy")
-  .get(async (req, res) => {
-    try {
-      const { id } = req.params
-      const book = await bookService.getBook({ _id: id })
-      res.json(book)
-    } catch (e) {
-      res.status(e.status)
-      res.send(e.message)
-    }
-  })
-//   .put(bookService.updateBook)
-
-// ///////////// CHATS //////////////
-
-// app.route("/chats")
-//   .post(chatService.addChat)
-
-// app.route("/chats/:userId")
-//   .get(chatService.getChatsByUserId)
-//   .put(chatService.updateChat)
-
-//////////////////////////////////
+// app.route("/yyy")
+//   .get(async (req, res) => {
+//     try {
+//       const { id } = req.params
+//       const book = await bookService.getBook({ _id: id })
+//       res.json(book)
+//     } catch (e) {
+//       res.status(e.status)
+//       res.send(e.message)
+//     }
+//   })
 
 app.listen(port)
 
