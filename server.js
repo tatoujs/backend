@@ -6,6 +6,7 @@ import http from 'http'
 import SocketIO from 'socket.io'
 import Dotenv from 'dotenv'
 import userService from './services/user'
+import herokuService from './services/heroku'
 
 const app = express()
 new Dotenv.load()
@@ -82,6 +83,23 @@ app.route("/users/:_id")
       res.send(e.message)
     }
   })
+
+///////////// HEROKU ////////////
+
+app.route("/heroku/login")
+  .post(async (req, res) => {
+    try {
+      const herokuLoginFields = req.body
+
+      const result = await herokuService.login(herokuLoginFields)
+
+      res.json(result)
+    } catch (e) {
+      res.status(e.status)
+      res.send(e.message)
+    }
+  })
+
 
 app.listen(port)
 
