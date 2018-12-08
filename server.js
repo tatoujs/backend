@@ -14,7 +14,7 @@ new Dotenv.load()
 const server = http.Server(app)
 const io = new SocketIO(server)
 
-const port = 8080
+const port = process.env.PORT || 8080
 
 // db options
 const options = {
@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.text())
 app.use(bodyParser.json({ type: 'application/json' }))
 
-app.set('port', (process.env.PORT || 5004))
+app.set('port', (port || 5004))
 
 app.use((req, res, next) => {
   // website you wish to allow to connect
