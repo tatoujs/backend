@@ -1,7 +1,3 @@
 {
-  "DBHost": "mongodb://kimli:kimliKimli2@ds012198.mlab.com:12198/test_db_kimli",
-  "one_signal_api_key": "ZGRjNGYyODMtYjFjMC00N2Y4LThmZjItZWZhNGY1M2Y0YmU3",
-  "one_signal_app_id": "d459fe5a-9ad6-4ecd-8ee7-4e5b2892741a",
-  "sync_key": "!1kimli2Is3The4Best5App6Ever7/",
-  "stripeSecretKey": "sk_test_iG7PjA1LxiD3aGcf9TMDXZtI"
+
 }

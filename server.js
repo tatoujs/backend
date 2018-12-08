@@ -22,9 +22,6 @@ import Stripe from 'stripe'
 // we load the db location from the JSON files
 import config from 'config'
 
-import bookService from './services/bookService'
-import chatService from './services/chatService'
-
 const app = express()
 
 const server = http.Server(app)
@@ -43,41 +40,12 @@ mongoose.connect(config.get('DBHost'), options)
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 
-// key to generate token for jwt secure connexions
-const SYNC_KEY = config.get('sync_key')
-
-// configures push notifications service
-onesignal.configure(config.get('one_signal_app_id'), config.get('one_signal_api_key'))
-
-// configures Stripe payment service
-const stripe = new Stripe(config.get('stripeSecretKey'))
-
-// configures nodemailer to send and receive mails on hello@kimli.fr
-const transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com',
-  port: 587,
-  secure: false,
-  tls: {
-    ciphers: 'SSLv3',
-  },
-  auth: {
-    user: 'hello@kimli.fr',
-    pass: '/kimliKimli2/',
-  },
-})
-
-const store = new ExpressBrute.MemoryStore()
-const bruteforce = new ExpressBrute(store)
-
 // Do not show logs when it is test
 if (config.util.getEnv('NODE_ENV') !== 'test') {
     // use morgan to log at command line
     // 'combined' outputs the Apache style LOGs
     app.use(morgan('combined'))
 }
-
-// 11 modules that increase NodeJS app security
-app.use(helmet())
 
 // parse application/json and look for raw text
 app.use(bodyParser.json())
@@ -109,9 +77,9 @@ app.disable('x-powered-by')
 
 app.get('/', (req, res) => res.json({ message: 'Welcome to Kimli !' }))
 
-///////////// BOOKS ///////////////
+///////////// xxx ///////////////
 
-app.route("/books")
+app.route("/xxx")
   .get(async (req, res) => {
     try {
       const { limit } = req.query
@@ -123,17 +91,8 @@ app.route("/books")
       res.send(e.message)
     }
   })
-  // .post(async (req, res) => {
-  //   try {
-  //     const bookFields = req.body
-  //     await bookService.postBook(bookFields)
-  //   } catch (e) {
-  //     res.status(e.status)
-  //     res.send(e.message)
-  //   }
-  // })
 
-app.route("/books/:id")
+app.route("/yyy")
   .get(async (req, res) => {
     try {
       const { id } = req.params
