@@ -1,17 +1,15 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import http from 'http'
 import SocketIO from 'socket.io'
-
-// we load the db location from the JSON files
-import config from 'config'
+import Dotenv from 'dotenv'
 
 import userService from './services/user'
 
 const app = express()
+new Dotenv.load()
 
 const server = http.Server(app)
 const io = new SocketIO(server)
@@ -25,16 +23,9 @@ const options = {
 }
 
 // db connection
-mongoose.connect(config.get('DBHost'), options)
+mongoose.connect(process.env.DBHOST, options)
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
-
-// Do not show logs when it is test
-if (config.util.getEnv('NODE_ENV') !== 'test') {
-  // use morgan to log at command line
-  // 'combined' outputs the Apache style LOGs
-  app.use(morgan('combined'))
-}
 
 // parse application/json and look for raw text
 app.use(bodyParser.json())
