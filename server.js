@@ -96,7 +96,7 @@ app.route("/heroku/login")
 
       res.json(result)
     } catch (e) {
-      res.status(e.status)
+      res.status(500)
       res.send(e.message)
     }
   })
