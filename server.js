@@ -5,7 +5,6 @@ import helmet from 'helmet'
 import http from 'http'
 import SocketIO from 'socket.io'
 import Dotenv from 'dotenv'
-
 import userService from './services/user'
 
 const app = express()
@@ -88,5 +87,16 @@ app.listen(port)
 
 console.log(`Magic is happening on port ${port}`)
 
-// for testing
-module.exports = app
+io.on('connection', (socket) => {
+  socket.on('join-room', (username) => {
+    socket.join(username)
+
+    setInterval(() => {
+      io.to(username).emit('log', {
+        date: new Date().getTime(),
+        type: 'just-a-log',
+        text: `this is a log sent at ${new Date().getTime()}`,
+      })
+    }, 3000)
+  })
+})
