@@ -71,10 +71,10 @@ app.get('/', (req, res) => res.json({ message: 'Welcome to TatouJS !' }))
 app.route("/user/:id")
   .get(async (req, res) => {
     try {
-      const { id } = req.params
+      const { id: _id } = req.params
       const user = await userService.get(id)
 
-      res.json(books)
+      res.json(user)
     } catch (e) {
       res.status(e.status)
       res.send(e.message)

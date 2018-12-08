@@ -8,4 +8,4 @@ let UserSchema = new Schema({
    password: { type: String, required: true },
 }, { versionKey: false });
 
-module.exports = mongoose.model('user', UserSchema)
+module.exports = mongoose.model('users', UserSchema)
