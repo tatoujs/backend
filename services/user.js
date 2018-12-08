@@ -8,6 +8,8 @@ const get = async (userFields) => {
   }
 
   const user = await User.find(userFields)
+
+  return user
 }
 
 const service = {
