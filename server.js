@@ -11,10 +11,10 @@ import herokuService from './services/heroku'
 const app = express()
 new Dotenv.load()
 
-const server = http.Server(app)
-const io = new SocketIO(server)
-
 const port = process.env.PORT || 8080
+
+const server = app.listen(port)
+const io = new SocketIO(server)
 
 // db options
 const options = {
@@ -84,7 +84,7 @@ app.route("/users/:_id")
     }
   })
 
-///////////// HEROKU ////////////
+///////////// HEROKU ///////////////
 
 app.route("/heroku/login")
   .post(async (req, res) => {
@@ -99,9 +99,6 @@ app.route("/heroku/login")
       res.send(e.message)
     }
   })
-
-
-app.listen(port)
 
 console.log(`Magic is happening on port ${port}`)
 
