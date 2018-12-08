@@ -84,6 +84,21 @@ app.route("/users/:_id")
     }
   })
 
+///////////// HEROKU ////////////
+app.route("/heroku/login")
+  .post(async (req, res) => {
+    try {
+      const herokuLoginFields = req.body
+      const result = await herokuService.login(herokuLoginFields)
+
+      res.json(result)
+    } catch (e) {
+      res.status(e.status)
+      res.send(e.message)
+    }
+  })
+
+
 app.listen(port)
 
 console.log(`Magic is happening on port ${port}`)
