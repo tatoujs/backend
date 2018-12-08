@@ -9,6 +9,8 @@ import SocketIO from 'socket.io'
 // we load the db location from the JSON files
 import config from 'config'
 
+import userService from './services/user'
+
 const app = express()
 
 const server = http.Server(app)
@@ -66,30 +68,29 @@ app.get('/', (req, res) => res.json({ message: 'Welcome to TatouJS !' }))
 
 ///////////// USER ///////////////
 
-// app.route("/user/:id")
-//   .get(async (req, res) => {
-//     try {
-//       const { id } = req.params
-//       const user = await userService.get(id)
+app.route("/user/:id")
+  .get(async (req, res) => {
+    try {
+      const { id } = req.params
+      const user = await userService.get(id)
 
-//       res.json(books)
-//     } catch (e) {
-//       res.status(e.status)
-//       res.send(e.message)
-//     }
-//   })
+      res.json(books)
+    } catch (e) {
+      res.status(e.status)
+      res.send(e.message)
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      const userFields = req.body
+      await userService.save(userFields)
 
-// app.route("/yyy")
-//   .get(async (req, res) => {
-//     try {
-//       const { id } = req.params
-//       const book = await bookService.getBook({ _id: id })
-//       res.json(book)
-//     } catch (e) {
-//       res.status(e.status)
-//       res.send(e.message)
-//     }
-//   })
+      res.send(userFields)
+    } catch (e) {
+      res.status(e.status)
+      res.send(e.message)
+    }
+  })
 
 app.listen(port)
 

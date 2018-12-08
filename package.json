@@ -7,11 +7,6 @@
     "start": "npm run build && node dist/server.js",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test"
-    }
-  },
   "jest": {
     "testURL": "http://localhost",
     "transform": {
@@ -37,7 +32,6 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "husky": "^1.0.0-rc.13",
     "jest": "^23.5.0"
   }
 }
