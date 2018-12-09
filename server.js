@@ -127,6 +127,8 @@ app.route('/heroku/apps/drains')
         result = await herokuService.createDrain(appId, auth)
       }
 
+      console.log(result)
+
       res.json(result)
     } catch (e) {
       res.status(500)
