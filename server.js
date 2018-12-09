@@ -114,6 +114,17 @@ app.route('/heroku/apps/:app_id/logs')
       res.send(e.message)
     }
   })
+  .post(async (req, res) => {
+    try {
+      // Simply loging received body for now
+      console.log(req.body)
+
+      res.json({ received: 'ok' })
+    } catch (e) {
+      res.status(500)
+      res.send(e.message)
+    }
+  })
 
 console.log(`Magic is happening on port ${port}`)
 
