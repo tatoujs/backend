@@ -29,10 +29,10 @@ db.on('error', console.error.bind(console, 'connection error:'))
 
 // parse application/json and look for raw text
 // app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(bodyParser.text())
-app.use(bodyParser.raw({ type: ['application/json', 'application/logplex-1'] }))
-// app.use(bodyParser.json({ type: ['application/json', 'application/logplex-1'] }))
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.text())
+app.use(bodyParser.raw({ type: ['application/logplex-1'] }))
+app.use(bodyParser.json({ type: ['application/json'] }))
 
 app.set('port', (port || 5004))
 
