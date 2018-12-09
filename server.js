@@ -16,6 +16,18 @@ const port = process.env.PORT || 8080
 const server = app.listen(port)
 const io = new SocketIO(server)
 
+io.on('connection', (socket) => {
+  socket.on('join-room', (appId) => {
+    socket.join(appId)
+  })
+})
+
+const sendLog = (appId, log) => {
+  io.to(appId).emit('log', {
+    text: log,
+  })
+}
+
 // db options
 const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
@@ -99,28 +111,31 @@ app.route("/heroku/login")
     }
   })
 
-app.route('/heroku/apps/:app_id/logs')
-  .get(async (req, res) => {
+app.route('/heroku/apps/drains')
+  .post(async (req, res) => {
     try {
-      const userFields = req.params
+      const appId = req.body.app_id
+      const auth = req.headers.authorization
 
-      // SET SOCKET IO ROOM NAME
-      // AND RESPOND OK WITH APP_ID
+      const result = await herokuService.createDrain(appId, auth)
 
-      const appObj = {}
-
-      res.json(appObj)
+      res.json(result)
     } catch (e) {
       res.status(500)
       res.send(e.message)
     }
   })
+
+app.route('/heroku/apps/:app_id/logs')
   .post(async (req, res) => {
     try {
+      const appId = req.params.app_id
+
       // Simply loging received body for now
       const buf = Buffer.from(req.body)
 
-      console.log(buf.toString('utf8'))
+      // Send log line to socket io room
+      sendLog(appId, buf.toString())
 
       res.json({ received: 'ok' })
     } catch (e) {
@@ -130,17 +145,3 @@ app.route('/heroku/apps/:app_id/logs')
   })
 
 console.log(`Magic is happening on port ${port}`)
-
-io.on('connection', (socket) => {
-  socket.on('join-room', (username) => {
-    socket.join(username)
-
-    setInterval(() => {
-      io.to(username).emit('log', {
-        date: new Date().getTime(),
-        type: 'just-a-log',
-        text: `this is a log sent at ${new Date().getTime()}`,
-      })
-    }, 3000)
-  })
-})

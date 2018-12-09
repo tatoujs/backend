@@ -23,8 +23,24 @@ const login = async (fields) => {
   return { username, apps }
 }
 
+const createDrain = async (appId, auth) => {
+  const config = {
+    headers: {
+      Accept: 'application/vnd.heroku+json; version=3',
+      Authorization: auth,
+    },
+  }
+
+  const response = await axios.post(`https://api.heroku.com/apps/${appId}/log-drains`, {
+    url: `http://tatoujsapp.herokuapp.com/heroku/apps/${appId}/logs`,
+  }, config)
+
+  return response.data
+}
+
 const service = {
   login,
+  createDrain,
 }
 
 export default service
