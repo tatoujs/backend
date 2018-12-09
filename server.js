@@ -28,10 +28,11 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 
 // parse application/json and look for raw text
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.text())
-app.use(bodyParser.json({ type: 'application/*' }))
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.text())
+app.use(bodyParser.raw({ type: ['application/json', 'application/logplex-1'] }))
+// app.use(bodyParser.json({ type: ['application/json', 'application/logplex-1'] }))
 
 app.set('port', (port || 5004))
 
@@ -117,7 +118,7 @@ app.route('/heroku/apps/:app_id/logs')
   .post(async (req, res) => {
     try {
       // Simply loging received body for now
-      console.log(req)
+      console.log(req.body)
 
       res.json({ received: 'ok' })
     } catch (e) {
