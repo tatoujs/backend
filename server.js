@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
 })
 
 const sendLog = (appId, log) => {
+  console.log(`sending log to ${appId}`)
   io.to(appId).emit('log', {
     text: log,
   })
