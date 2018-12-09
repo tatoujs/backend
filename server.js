@@ -31,7 +31,7 @@ db.on('error', console.error.bind(console, 'connection error:'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.text())
-app.use(bodyParser.json({ type: ['application/json', 'application/logplex-1'] }))
+app.use(bodyParser.json({ type: 'application/*' }))
 
 app.set('port', (port || 5004))
 
