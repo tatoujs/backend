@@ -121,7 +121,7 @@ app.route('/heroku/apps/drains')
 
       const existingDrains = await herokuService.getDrains(appId, auth)
 
-      if (existingDrains) {
+      if (existingDrains.length > 0) {
         result = { drains: existingDrains }
       } else {
         result = await herokuService.createDrain(appId, auth)
