@@ -118,7 +118,9 @@ app.route('/heroku/apps/:app_id/logs')
   .post(async (req, res) => {
     try {
       // Simply loging received body for now
-      console.log(typeof req.body)
+      const buf = Buffer.from(req.body)
+
+      console.log(buf.toString('utf8'))
 
       res.json({ received: 'ok' })
     } catch (e) {
