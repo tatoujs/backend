@@ -33,13 +33,27 @@ const createDrain = async (appId, auth) => {
 
   const response = await axios.post(`https://api.heroku.com/apps/${appId}/log-drains`, {
     url: `http://tatoujsapp.herokuapp.com/heroku/apps/${appId}/logs`,
-  }, config)
+  }, config);
 
   return response.data
 }
 
+const getDrains = async (appId, auth) => {
+  const config = {
+    headers: {
+      Accept: 'application/vnd.heroku+json; version=3',
+      Authorization: auth,
+    },
+  };
+
+  const previousDrains = await axios.get(`https://api.heroku.com/apps/${appId}/log-drains`, config);
+
+  return previousDrains.data
+}
+
 const service = {
   login,
+  getDrains,
   createDrain,
 }
 
